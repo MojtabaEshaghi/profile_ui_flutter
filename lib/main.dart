@@ -8,6 +8,8 @@ void main() {
   runApp(const MyApp());
 }
 
+enum _SkillType { photoshop, xd, illustrator, afterEffect, lightRoom }
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           brightness: Brightness.dark,
           primaryColor: Colors.pink.shade400,
+          dividerColor: const Color(0x0dffffff),
           appBarTheme: AppBarTheme(backgroundColor: Colors.black),
           dividerTheme: DividerThemeData(color: Colors.white),
           scaffoldBackgroundColor: Color.fromARGB(255, 30, 30, 30),
@@ -30,20 +33,25 @@ class MyApp extends StatelessWidget {
                   fontSize: 13, color: Color.fromARGB(200, 255, 255, 255)),
               headline6: TextStyle(fontWeight: FontWeight.bold),
               subtitle1:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: 16)))),
+              TextStyle(fontWeight: FontWeight.bold, fontSize: 16)))),
       home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile sample"),
+        title: const Text("Profile sample"),
         actions: const [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 4),
@@ -78,7 +86,10 @@ class MyHomePage extends StatelessWidget {
                     children: [
                       Text(
                         "Mojtaba Eshaghi",
-                        style: Theme.of(context).textTheme.subtitle1,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .subtitle1,
                       ),
                       SizedBox(
                         height: 4,
@@ -91,7 +102,11 @@ class MyHomePage extends StatelessWidget {
                         children: [
                           Icon(
                             CupertinoIcons.location,
-                            color: Theme.of(context).textTheme.bodyText1!.color,
+                            color: Theme
+                                .of(context)
+                                .textTheme
+                                .bodyText1!
+                                .color,
                             size: 16,
                           ),
                           SizedBox(
@@ -99,7 +114,10 @@ class MyHomePage extends StatelessWidget {
                           ),
                           Text(
                             "Norway/Oslo",
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .caption,
                           )
                         ],
                       )
@@ -108,7 +126,9 @@ class MyHomePage extends StatelessWidget {
                 ),
                 Icon(
                   CupertinoIcons.heart,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme
+                      .of(context)
+                      .primaryColor,
                 )
               ],
             ),
@@ -117,10 +137,13 @@ class MyHomePage extends StatelessWidget {
             padding: EdgeInsets.all(14),
             child: Text(
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed'
-              ' do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-              ' Ut enim ad minim veniam, quis nostrud exercitation ullamco '
-              'laboris nisi ut aliquip ex ea commodo consequat.',
-              style: Theme.of(context).textTheme.bodyText1,
+                  ' do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+                  ' Ut enim ad minim veniam, quis nostrud exercitation ullamco '
+                  'laboris nisi ut aliquip ex ea commodo consequat.',
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .bodyText1,
             ),
           ),
           const Divider(),
@@ -131,36 +154,108 @@ class MyHomePage extends StatelessWidget {
               children: [
                 Text(
                   "Skills",
-                  style: Theme.of(context)
+                  style: Theme
+                      .of(context)
                       .textTheme
                       .bodyText2!
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 2,
                 ),
-                Icon(
+                const Icon(
                   CupertinoIcons.chevron_down,
                   size: 12,
                 )
               ],
             ),
           ),
-          Wrap(
-            direction: Axis.horizontal,
-            children: [Container(
-              width: 120,
-              height: 100,
-              decoration: BoxDecoration(),
-              child: Column(
-                children: [
-Image.asset(Assets.imagesAppIcon01),
-                  Text('Photoshop')
-                ],
-              ),
-            )],
+          Center(
+            child: Wrap(
+              direction: Axis.horizontal,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                SkillItem(
+                    title: 'photoshop',
+                    imagePath: Assets.imagesAppIcon01,
+                    isActive: true,
+                    shadowColor: Colors.blue.shade300),
+                SkillItem(
+                    title: 'Lightroom',
+                    imagePath: Assets.imagesAppIcon02,
+                    isActive: false,
+                    shadowColor: Colors.blue.shade600),
+                SkillItem(
+                    title: 'AfterEffect',
+                    imagePath: Assets.imagesAppIcon03,
+                    isActive: false,
+                    shadowColor: Colors.deepPurpleAccent.shade400),
+                SkillItem(
+                    title: 'Illustrator',
+                    imagePath: Assets.imagesAppIcon04,
+                    isActive: false,
+                    shadowColor: Colors.orange.shade600),
+                SkillItem(
+                    title: 'XD',
+                    imagePath: Assets.imagesAppIcon05,
+                    isActive: false,
+                    shadowColor: Colors.purpleAccent.shade400),
+              ],
+            ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class SkillItem extends StatelessWidget {
+  final String title, imagePath;
+  final bool isActive;
+  final Color shadowColor;
+  final Function onTap;
+  final _SkillType skillType;
+
+  const SkillItem({
+    Key? key,
+    required this.title,
+    required this.imagePath,
+    required this.isActive,
+    required this.shadowColor,
+    required this.onTap,
+    required this.skillType,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap:,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        width: 110,
+        height: 110,
+        decoration: isActive
+            ? BoxDecoration(
+            color: Theme
+                .of(context)
+                .dividerColor,
+            borderRadius: BorderRadius.circular(16))
+            : null,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              imagePath,
+              width: 50,
+              height: 50,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(title)
+          ],
+        ),
       ),
     );
   }
